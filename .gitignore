@@ -1,0 +1,10 @@
+node_modules/
+.DS_Store
+*.log
+/api/.env
+/demos/
+/trombi/
+/marketplace/
+/trombi-public/
+/supports/
+/corrige-*/
