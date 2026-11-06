@@ -3,6 +3,7 @@ import cors from 'cors'
 import express from 'express'
 import helmet from 'helmet'
 import path from 'node:path'
+import { createIconController } from './controllers/iconController.js'
 import { delay } from './middlewares/delay.js'
 import { errorHandler, notFoundHandler } from './middlewares/errors.js'
 import { rateLimiter } from './middlewares/rateLimiter.js'
@@ -33,11 +34,12 @@ export function createApp(config, store = createStore(config)) {
     }),
   )
 
-  // Les images des produits : servies comme par un CDN, hors limite de débit
+  // Les images (photos des produits, avatars) : servies comme par un CDN, hors limite de débit
   app.use(
     '/product-images',
     express.static(path.join(config.publicDir, 'product-images'), { immutable: true, maxAge: '30d', index: false }),
   )
+  app.get('/icon/:seed{/:size}', createIconController(config.publicDir).show)
 
   app.use(rateLimiter(config.rateLimit))
   app.use(express.json({ limit: config.jsonLimit }))

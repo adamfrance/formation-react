@@ -20,13 +20,16 @@ describe('limite de débit (100 requêtes par 10 s chez DummyJSON, 3 ici)', () =
     expect(Number(last.headers['x-ratelimit-reset'])).toBeGreaterThan(Date.now() / 1000)
   })
 
-  it('compte aussi les avatars, comme DummyJSON, mais pas les images des produits (servies comme par un CDN)', async () => {
+  it('ne compte ni les avatars ni les images des produits (servis comme par un CDN)', async () => {
     const { app } = testApp({ RATE_LIMIT_MAX: '2' })
-    await request(app).get('/icon/emilys/128')
-    await request(app).get('/icon/michaelw/128')
-    expect((await request(app).get('/icon/sophiab/128')).status).toBe(429)
+    for (const seed of ['emilys', 'michaelw', 'sophiab', 'jamesd']) {
+      expect((await request(app).get(`/icon/${seed}/128`)).status).toBe(200)
+    }
     const image = await request(app).get('/product-images/beauty/essence-mascara-lash-princess/thumbnail.webp')
     expect(image.status).toBe(200)
+    const statuses = []
+    for (let i = 0; i < 3; i += 1) statuses.push((await request(app).get('/users/1?select=id')).status)
+    expect(statuses).toEqual([200, 200, 429])
   })
 })
 

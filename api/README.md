@@ -57,8 +57,8 @@ Les erreurs sont toujours en JSON : `{ "message": "User with id '999' not found"
 
 ## Sécurité
 
-- **Limite de débit** de DummyJSON : 100 requêtes par tranche de 10 secondes et par adresse IP, avatars compris, puis
-  `429` ; en-têtes `x-ratelimit-limit`, `x-ratelimit-remaining`, `x-ratelimit-reset`. Les images des produits, servies
+- **Limite de débit** de DummyJSON : 100 requêtes par tranche de 10 secondes et par adresse IP, puis `429` ; en-têtes
+  `x-ratelimit-limit`, `x-ratelimit-remaining`, `x-ratelimit-reset`. Les images (avatars, photos des produits), servies
   comme par un CDN, n'y entrent pas.
 - **CORS** limité aux applications du cours (`CORS_ORIGINS`), cookies autorisés.
 - **En-têtes de sécurité** (`helmet`) ; l'en-tête `X-Powered-By` est retiré.
