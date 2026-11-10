@@ -1,0 +1,29 @@
+.card {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--surface);
+}
+.card:hover { border-color: var(--primary); }
+.selected { border-color: var(--primary); box-shadow: 0 0 0 2px var(--primary); }
+.texts { flex: 1; min-width: 0; }
+.name { margin: 0; font-size: 16px; }
+.select { padding: 0; border: none; background: none; font-weight: 700; text-align: left; cursor: pointer; }
+.select::after { content: ''; position: absolute; inset: 0; }
+.title,
+.department { margin: 0; font-size: 13px; color: var(--muted); }
+.department { font-weight: 600; }
+.favorite {
+  position: relative;
+  z-index: 1;
+  align-self: flex-start;
+  border: none;
+  background: none;
+  color: var(--accent);
+  font-size: 22px;
+  cursor: pointer;
+}

@@ -1,0 +1,15 @@
+/* Le projet des exemples : un thème sombre et vert, pour ne pas le confondre avec Trombi (clair et bleu) */
+:root { font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif; line-height: 1.5; color: #e6edf3; background: #12161c; color-scheme: dark; }
+body { margin: 0; }
+.page { max-width: 900px; margin: 0 auto; padding: 24px; }
+h1 { margin-top: 0; color: #97ce4c; }
+.vide { color: #9aa5b1; }
+.colonnes { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+.colonnes3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+.boite { padding: 16px; border: 1px solid #2c3642; border-radius: 12px; background: #181e26; }
+.boite h3 { margin-top: 0; }
+ul.lignes { list-style: none; padding: 0; display: grid; gap: 8px; }
+ul.lignes li { display: flex; align-items: center; gap: 8px; }
+a { color: #b6e27a; }
+input { padding: 4px 8px; }
+button { padding: 6px 12px; cursor: pointer; }
