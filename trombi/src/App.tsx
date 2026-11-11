@@ -1,76 +1,52 @@
-import { useEffect, useState } from 'react'
-import Header from './components/Header.tsx'
-import Panel from './components/Panel.tsx'
-import CollaboratorCard from './components/CollaboratorCard.tsx'
-import type { Collaborator } from './types.ts'
+import { lazy } from "react";
+import { Route, Routes } from "react-router";
+import RootLayout from "./layouts/RootLayout.tsx";
+import HomePage from "./pages/HomePage.tsx";
+import DirectoryPage from "./pages/DirectoryPage.tsx";
+import RequireAuth from "./components/RequireAuth.tsx";
 
-const API_URL = 'http://localhost:4000/users?limit=0&select=firstName,lastName,email,phone,image,role,company,address'
 
-interface UsersResponse {
-  users: Collaborator[]
-}
+const CollaboratorPage = lazy(() => import("./pages/CollaboratorPage.tsx"));
+const TeamPage = lazy(() => import("./pages/TeamPage.tsx"));
+const LoginPage = lazy(() => import("./pages/LoginPage.tsx"));
+const AdminPage = lazy(() => import("./pages/AdminPage.tsx"));
+const NotFoundPage = lazy(() => import("./pages/NotFoundPage.tsx"));
+const AccountLayout = lazy(() => import("./pages/account/AccountLayout.tsx"));
+const ProfilePage = lazy(() => import("./pages/account/ProfilePage.tsx"));
+const MyTasksPage = lazy(() => import("./pages/account/MyTasksPage.tsx"));
 
 function App() {
-  const [collaborators, setCollaborators] = useState<Collaborator[]>([]) // vide au départ, rempli par l'API
-  const [loading, setLoading] = useState(true)
-  const [error, setError] = useState<string | null>(null)
-  const [query, setQuery] = useState('') // le texte de la recherche
-  const [department, setDepartment] = useState('') // le service choisi ('' = tous)
-
-  useEffect(() => {
-    fetch(API_URL)
-      .then((response) => {
-        if (!response.ok) throw new Error(`HTTP ${response.status}`) // fetch ne rejette pas sur une erreur HTTP
-        return response.json() as Promise<UsersResponse>
-      })
-      .then((data) => setCollaborators(data.users))
-      .catch((err: Error) => setError(err.message))
-      .finally(() => setLoading(false))
-  }, []) // [] : une seule fois, après le premier rendu
-
-  const departments = [...new Set(collaborators.map((c) => c.company.department))].sort() // sans doublons, triés
-  const search = query.trim().toLowerCase()
-  const visible = collaborators.filter(
-    (c) =>
-      `${c.firstName} ${c.lastName}`.toLowerCase().includes(search) &&
-      (department === '' || c.company.department === department),
-  ) // valeur dérivée : recalculée à chaque rendu, ce n'est pas un état
-
   return (
-    <div className="app">
-      <Header />
-      <div className="toolbar">
-        <label htmlFor="recherche" className="sr-only">Rechercher</label>
-        <input
-          id="recherche"
-          className="search"
-          type="search"
-          placeholder="Rechercher un collaborateur…"
-          value={query}
-          onChange={(event) => setQuery(event.target.value)}
+    <Routes>
+      <Route element={<RootLayout />}>
+        <Route index element={<HomePage />} />
+        <Route path="annuaire" element={<DirectoryPage />} />
+        <Route path="annuaire/:id" element={<CollaboratorPage />} />
+        <Route path="equipe" element={<TeamPage />} />
+        <Route path="connexion" element={<LoginPage />} />
+        <Route
+          path="mon-espace"
+          element={
+            <RequireAuth>
+              <AccountLayout />
+            </RequireAuth>
+          }
+        >
+          <Route index element={<ProfilePage />} />
+          <Route path="taches" element={<MyTasksPage />} />
+        </Route>
+        <Route
+          path="admin"
+          element={
+            <RequireAuth role="admin">
+              <AdminPage />
+            </RequireAuth>
+          }
         />
-        <label htmlFor="service" className="sr-only">Filtrer par service</label>
-        <select id="service" value={department} onChange={(event) => setDepartment(event.target.value)}>
-          <option value="">Tous les services</option>
-          {departments.map((d) => (
-            <option key={d} value={d}>{d}</option>
-          ))}
-        </select>
-      </div>
-      <Panel title="Annuaire" actions={<span>{visible.length} / {collaborators.length}</span>}>
-        {loading && <p className="loading">Chargement des collaborateurs…</p>}
-        {error && <p className="error" role="alert">Impossible de charger l'annuaire : {error}</p>}
-        {!loading && !error && visible.length === 0 && (
-          <p className="empty">Aucun collaborateur ne correspond à la recherche.</p>
-        )}
-        <ul className="card-grid">
-          {visible.map((c) => (
-            <CollaboratorCard key={c.id} collaborator={c} />
-          ))}
-        </ul>
-      </Panel>
-    </div>
-  )
+        <Route path="*" element={<NotFoundPage />} />
+      </Route>
+    </Routes>
+  );
 }
 
-export default App
+export default App;
