@@ -14,7 +14,7 @@ applications React de la formation, le projet des exemples et Trombi, se créent
 | `debut-jour-2` | le départ du jour 2 : l'API, Trombi à la fin du jour 1 et le projet des exemples | le matin du jour 2 |
 | `debut-jour-3` | le départ du jour 3 : l'API, Trombi à la fin du jour 2 et le projet des exemples | le matin du jour 3 |
 | `jour-1`, `jour-2` | Trombi seul, à la fin de chaque journée : le corrigé du jour | pour comparer avec son propre code |
-| `supports` | les supports des journées déjà faites (`formation-react-jourN-apprenant.html`) et leurs énoncés | chaque matin, pour relire la veille |
+| `supports` | les supports des journées terminées (`formation-react-jourN-apprenant.html`) et leurs énoncés, publiés à la fin de chaque journée | pour relire une journée |
 
 ## Commencer une journée
 
@@ -38,7 +38,7 @@ cd ~/projets/formation-react
 git clone -b supports https://github.com/adamfrance/formation-react.git supports
 ```
 
-Puis ouvrir `supports/formation-react-jour2-apprenant.html` dans le navigateur.
+Puis ouvrir dans le navigateur le support de la journée voulue, par exemple `supports/formation-react-jour1-apprenant.html`.
 
 ## Lancer l'API seule
 
