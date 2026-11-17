@@ -5,7 +5,7 @@ const COURSE_PRODUCTS = 'title,price,thumbnail,stock,category,rating'
 
 export const CASES = [
   // Requêtes faites par les applications du cours
-  { name: 'annuaire de Trombi', url: `/users?limit=0&select=${COURSE_USERS}` },
+  { name: 'annuaire de Tribu', url: `/users?limit=0&select=${COURSE_USERS}` },
   { name: 'fiche Next.js', url: `/users/1?select=${COURSE_USERS}` },
   { name: 'tâches d’un collaborateur', url: '/users/1/todos' },
   { name: 'publications d’un collaborateur', url: '/users/5/posts' },

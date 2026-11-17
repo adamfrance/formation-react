@@ -1,7 +1,7 @@
 # API de la formation React
 
 La seule API du cours. Elle reproduit en local l'API publique [DummyJSON](https://dummyjson.com) : mêmes chemins, mêmes
-réponses, mêmes règles (pagination, recherche, limite de débit, jetons de connexion). Trombi et la Marketplace l'appellent
+réponses, mêmes règles (pagination, recherche, limite de débit, jetons de connexion). Tribu et la Marketplace l'appellent
 sur `http://localhost:4000` au lieu de `https://dummyjson.com`. On la lance au début de la journée, dans un terminal à
 part, et on n'y touche plus.
 

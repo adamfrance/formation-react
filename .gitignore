@@ -3,8 +3,8 @@ node_modules/
 *.log
 /api/.env
 /demos/
-/trombi/
+/tribu/
 /marketplace/
-/trombi-public/
+/tribu-public/
 /supports/
 /corrige-*/
