@@ -1,0 +1,48 @@
+# Intégration continue : à chaque envoi sur GitHub, une machine neuve vérifie tout le projet
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  verifier:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7 # récupère le code du dépôt
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 24
+          cache: npm # garde les paquets téléchargés d'une exécution à l'autre
+      - run: npm ci # installe exactement les versions de package-lock.json
+      - run: npm run lint
+      - run: npm run test:coverage # échoue si un test échoue ou si la couverture passe sous le seuil
+      - run: npm run build
+
+  deployer:
+    needs: verifier # seulement si la vérification a réussi
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write # publier sur GitHub Pages
+      id-token: write # prouver à GitHub Pages que la publication vient de ce dépôt
+    environment:
+      name: github-pages
+      url: ${{ steps.publication.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci
+      # GitHub Pages sert le site dans un sous-dossier au nom du dépôt (…github.io/tribu/) : on le dit à Vite
+      - run: npm run build -- --base=/${{ github.event.repository.name }}/
+      # GitHub Pages ne connaît pas les routes de l'application : sa page 404 relance l'application
+      - run: cp dist/index.html dist/404.html
+      - uses: actions/upload-pages-artifact@v5
+        with:
+          path: dist
+      - id: publication
+        uses: actions/deploy-pages@v5
