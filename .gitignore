@@ -2,9 +2,6 @@ node_modules/
 .DS_Store
 *.log
 /api/.env
-/demos/
-/tribu/
-/marketplace/
-/tribu-public/
 /supports/
 /corrige-*/
+/marketplace/
