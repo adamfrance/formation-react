@@ -28,11 +28,3 @@ export interface Task {
   completed: boolean
   userId: number
 }
-
-// Une publication d'un collaborateur (API DummyJSON : /users/:id/posts)
-export interface Post {
-  id: number
-  title: string
-  body: string
-  views: number
-}
